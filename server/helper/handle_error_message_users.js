@@ -1,4 +1,4 @@
-// handle error
+// handle error User regist & update
 function error_message(err){
   if(err.errmsg){
     return 'username is already'

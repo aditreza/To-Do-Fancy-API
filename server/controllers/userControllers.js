@@ -47,18 +47,20 @@ const updateUser = function(req,res){
     let id = {
       _id : ObjectId(req.params.id)
     }
-    let editUser = {
-      fullname : req.body.fullname,
-      username : req.body.username,
-      password : hash,
-      email : req.body.email,
-      phone : req.body.phone
-    }
-    Users.findByIdAndUpdate(id, editUser).then(function(){
-      res.status(201).send('[+] 1 User Updated')
-    }).catch(function(err){
-      console.log('[-] error User Update')
-      res.status(500).send(errmsg(err))
+    Users.findById(id).then(function(data_Users){
+      data_Users.fullname = req.body.fullname,
+      data_Users.username = req.body.username,
+      data_Users.password = hash,
+      data_Users.email = req.body.email,
+      data_Users.phone = req.body.phone
+      
+      //save update
+      data_Users.save().then(function(){
+        res.status(201).send('[+] 1 User Updated')
+      }).catch(function(err){
+        console.log('[-] error User Update')
+        res.status(500).send(errmsg(err))
+      })
     })
   }).catch(function(err){
     console.log('[-] update password crypt')

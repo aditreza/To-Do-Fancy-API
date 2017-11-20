@@ -24,7 +24,7 @@ const tasks = require('./routes/task')
 const users = require('./routes/user')
 
 app.use('/', index)
-app.use('/api', tasks)
+app.use('/api/tasks', tasks)
 app.use('/api/users', users)
 
 //server listen

@@ -18,7 +18,7 @@ const userSchema = new Schema({
       validator : function(email_validator){
         return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email_validator)
       },
-      message : '{VALUE} is not a valid mail format, use: example@example.com'
+      message : '{VALUE} is not a valid mail format, use: example@mail.com'
     }
   },
   phone : {
