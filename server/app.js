@@ -20,7 +20,12 @@ mongoose.connect('mongodb://localhost/todoFancy').then(function(){
 })
 //routes
 const index = require('./routes/index')
+const tasks = require('./routes/task')
+const users = require('./routes/user')
+
 app.use('/', index)
+app.use('/api', tasks)
+app.use('/api/users', users)
 
 //server listen
 app.listen(PORT, function(err){
