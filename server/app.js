@@ -1,0 +1,30 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
+const cors = require('cors')
+const mongoose = require('mongoose')
+const PORT = process.env.PORT || 3000
+const app = express()
+
+// middleware
+app.use(morgan('dev'))
+app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+// db connect
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost/todoFancy').then(function(){
+  console.log('[+] success db connection')
+}).catch(function(err){
+  console.error(err)
+})
+//routes
+const index = require('./routes/index')
+app.use('/', index)
+
+//server listen
+app.listen(PORT, function(err){
+  if(!err){
+    console.log(`[+] server listen on PORT ${PORT}`)
+  }
+})
