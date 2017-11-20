@@ -9,11 +9,56 @@ const createTask = function(req,res){
   newTask.save().then(function(){
     res.status(201).send('1 Task Created')
   }).catch(function(err){
-    res.status(500).send(err)
+    res.status(500).send(err.errors.title.message)
     console.log(err, '[-] create task')
   })
 }
 
+const findAllTask = function(req,res){
+  Tasks.find().populate('author').then(function(data_Tasks){
+    console.log('[+] find all data Tasks')
+    res.status(200).send(data_Tasks)
+  }).catch(function(err){
+    console.log(err, '[-] error find Users')
+    res.status(500).send(err)
+  })
+}
+
+const updateTask = function(req,res){
+  let id = {
+    _id : ObjectId(req.params.id)
+  }
+  Tasks.findById(id).then(function(data_Tasks){
+    data_Tasks.title = req.body.title
+    //save update
+    data_Tasks.save().then(function(){
+      console.log('[+] 1 Task Updated')
+      res.status(201).send('[+] 1 Task Updated')
+    }).catch(function(err){
+      console.log('[-] error save update Tasks')
+      res.status(500).send(err)
+    })
+  }).catch(function(err){
+    console.log('[-] error find id in update Tasks')
+    res.status(500).send(err)
+  })
+}
+
+const destroyTask = function(req,res){
+  let id = {
+    _id : ObjectId(req.params.id)
+  }
+  Tasks.findByIdAndRemove(id).then(function(){
+    res.status(201).send('[+] 1 Task Deleted')
+  }).catch(function(err){
+    console.log(err, '[-] error delete Task')
+    res.status(500).send(err)
+  })
+}
+
 module.exports = {
-  createTask
+  createTask,
+  findAllTask,
+  updateTask,
+  destroyTask
 }
