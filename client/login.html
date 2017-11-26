@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>login to do Fancy</title>
+  <link rel="stylesheet" title="custstyle" href="assets/css/custstyle.css"/>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/icons/fontawesome/css/style.css">
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body id="setopo-music" class="header2 setopo-music-main">
+  <div id="app">
+    <loader-template/>
+  </div>
+  
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+<script>
+  // loader start
+  $(document).ready(function(){
+  $(".loader-wrapper").fadeOut();
+  })
+  // loader end
+
+  Vue.component('loader-template',{
+    template : `
+    <!-- start loader -->
+    <div class="loader-wrapper">
+        <div class="loader">
+          <svg class="circular" viewBox="25 25 50 50">
+            <circle class="loader-animation" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+          </svg>
+        </div>
+      </div>
+    <!-- end loader-->
+    `
+  })
+
+  new Vue({
+    el : '#app',
+    data : {
+      message : 'booo'
+    }
+  })
+</script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/jquery.easing.min.js"></script>
+<script src="assets/js/main.js"></script>
+</html>
