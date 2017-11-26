@@ -18,7 +18,7 @@
 
   <div id="app">
     <load></load>
-    <log-in></log-in>
+    <log-in @signin="loGin" ></log-in>
   </div>
 
 
@@ -44,15 +44,17 @@
             <span>Login</span>
             <h5 style="font-weight: 400;">to do fancy <br> task app for everyone </h5>
           </div>
-          <div class=" sb-form orlogin">
-            <input type="text" placeholder="username">
-            <input type="password" placeholder="password">
-          </div>
-          <div class="sb-form">
-            <button style="margin-top: 5%; margin-bottom: 5px;" type="submit" class="btn btn-lg btn-block">login</button>
-            <button type="submit" class="btn btn-lg btn-block">via facebook</button>
-            <p class="signup-here">no account ? <a style="color:#e81356;" href="signup.html"> Signup</a> here </p>
-          </div>
+          <form @submit.prevent="toLogin">
+            <div class=" sb-form orlogin">
+              <input v-model="username" name="username" type="text" placeholder="username">
+              <input v-model="password" name="password" type="password" placeholder="password">
+            </div>
+            <div class="sb-form">
+              <button style="margin-top: 5%; margin-bottom: 5px;" class="btn btn-lg btn-block">login</button>
+              <button v-on:click="fbLogin" class="btn btn-lg btn-block">via facebook</button>
+              <p class="signup-here">no account ? <a style="color:#e81356;" href="signup.html"> Signup</a> here </p>
+            </div>
+          </form>
         </div>
       </div> 
       <div style="text-align:center;" class="music-home-list">
@@ -72,7 +74,46 @@
     template : '#loader-template'
   })
   Vue.component('log-in', {
-    template : '#login-template'
+    template : '#login-template',
+    data : function(){
+      return{
+        username : '',
+        password : ''
+      }
+    },
+    methods : {
+      toLogin(){
+        this.$emit('signin',{
+          username : this.username,
+          password : this.password
+        })
+      },
+      fbLogin : function(){
+        FB.login(function (response) {
+          // console.log(response)
+          if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            FB.api('/me', {
+              fields: 'id,name,email,picture{url}'
+            }, function (response) {
+              console.log(response)
+              console.log('Successful login for: ' + response.name);
+              // fb logout
+              if (typeof (storage) !== 'undefined') {
+                document.getElementById('status').innerHTML =
+                  'Thanks for logging in, ' + response.name + '!';
+              } else {
+                // document.getElementById('status').innerHTML = 'Please log into this app.'
+              }
+            });
+            console.log(response)
+            window.location = "http://localhost:8080/mainpage.html"
+          } else {
+            // The person is not logged into this app or we are unable to tell.
+          }
+        },{scope :'public_profile,email'})
+      }
+    }
   })
   // end component
 
@@ -80,6 +121,53 @@
     el : '#app',
     data : {
       message : 'booo'
+    },
+    created(){
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '2054610768108547',
+          cookie: true, // enable cookies to allow the server to access
+          // the session
+          xfbml: true, // parse social plugins on this page
+          version: 'v2.8' // use graph api version 2.8
+        });
+
+        // Now that we've initialized the JavaScript SDK, we call
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+      };
+
+      // Load the SDK asynchronously
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+    },
+    methods : {
+      loGin : function(data){
+        axios.post('http://localhost:3000/api/users/login', data)
+        .then(function(response){
+          console.log(response.data.token)
+          // window.location='http://localhost:8080/mainpage.html'
+          localStorage.setItem('token', response.data.token)
+        })
+        .catch(function(err){
+          console.log(err)
+        })
+      }
     }
   })
 </script>

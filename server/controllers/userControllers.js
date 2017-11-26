@@ -8,6 +8,7 @@ const secret_key = process.env.secretKey
 
 
 const createUser = function(req,res){
+  // console.log(req)
   let saltRound = 10
   bcrypt.hash(req.body.password, saltRound).then(function(hash){
     let newUser = Users({
@@ -80,9 +81,47 @@ const destroyUser = function(req,res){
   })
 }
 
+// login user
+const loginUsers = function(req,res){
+  // console.log(req.body)
+  Users.findOne({
+    username: req.body.username
+  }).then(function(data_User){
+    // console.log(data_User)
+    if(data_User){
+      bcrypt.compare(req.body.password, data_User.password).then(function(result){
+        // console.log(result)
+        if(result){
+          console.log(data_User)
+          jwt.sign({
+            id : data_User.id,
+            username : data_User.username
+          }, secret_key, function(err, token){
+            if(!err){
+              console.log('this token >>', token)
+              res.status(201).send({
+                success: true,
+                message: 'Enjoy your token!',
+                token: token,
+                username: data_User.fullname
+              })
+            }
+          })
+        }
+      })
+    }
+  }).catch(function(err){
+    if(err){
+      res.status(500).send(err)
+      console.log(err)
+    }
+  })
+}
+
 module.exports = {
   createUser,
   findAllUsers,
   updateUser,
-  destroyUser
+  destroyUser,
+  loginUsers
 }

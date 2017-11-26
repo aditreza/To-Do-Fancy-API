@@ -18,7 +18,7 @@
 
   <div id="app">
     <load></load>
-    <sign-up></sign-up>
+    <sign-up @register="regis"></sign-up>
   </div>
 
 
@@ -44,17 +44,19 @@
             <span>Signup</span>
             <h5 style="font-weight: 400;">Registration to do fancy <br> task app for everyone </h5>
           </div>
-          <div class=" sb-form orlogin">
-            <input type="text" placeholder="fullname">
-            <input type="text" placeholder="email">
-            <input type="text" placeholder="phone">
-            <input type="text" placeholder="username">
-            <input type="password" placeholder="password">
-          </div>
-          <div class="sb-form">
-            <button style="margin-top: 5%; margin-bottom: 5px;" type="submit" class="btn btn-lg btn-block">signup</button>
-            <p class="signup-here">already account ? <a style="color:#e81356;" href="login.html"> Login</a> here </p>
-          </div>
+          <form @submit.prevent="toRegister">
+            <div class=" sb-form orlogin">
+                <input type="text" v-model="fullname" placeholder="fullname">
+                <input type="text" v-model="email" placeholder="email">
+                <input type="text" v-model="phone" placeholder="phone">
+                <input type="text" v-model="username" placeholder="username">
+                <input type="password" v-model="password" placeholder="password">
+              </div>
+              <div class="sb-form">
+                <button style="margin-top: 5%; margin-bottom: 5px;" class="btn btn-lg btn-block">signup</button>
+                <p class="signup-here">already account ? <a style="color:#e81356;" href="login.html"> Login</a> here </p>
+              </div>
+          </form>
         </div>
       </div> 
       <div style="text-align:center;" class="music-home-list">
@@ -74,7 +76,28 @@
     template : '#loader-template'
   })
   Vue.component('sign-up', {
-    template : '#signup-template'
+    template : '#signup-template',
+    data : function(){
+      return{
+        fullname : '',
+        email : '',
+        phone : '',
+        username : '',
+        password : ''
+      }
+    },
+    methods : {
+      toRegister(){
+        // console.log(this.fullname)
+        this.$emit('register',{
+          fullname : this.fullname,
+          email : this.email,
+          phone : this.phone,
+          username : this.username,
+          password : this.password
+        })
+      }
+    }
   })
   // end component
 
@@ -82,6 +105,18 @@
     el : '#app',
     data : {
       message : 'booo'
+    },
+    methods : {
+      regis : function(data){
+        axios.post('http://localhost:3000/api/users', data)
+        .then(function(response){
+          console.log(response)
+          window.location='http://localhost:8080/login.html'
+        })
+        .catch(function(err){
+          console.log(err)
+        })
+      }
     }
   })
 </script>
