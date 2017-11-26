@@ -4,9 +4,171 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <link rel="stylesheet" title="custstyle" href="assets/css/custstyle.css"/>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/icons/fontawesome/css/style.css">
+  <link rel="stylesheet" href="assets/css/slick.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <title>to do fancy</title>
 </head>
-<body>
-  <h1>boooom</h1>
+<body class="cont-mainpage">
+
+  <div id="app">
+    <load @out="logout"></load>
+    <todo @new="newTask"></todo>
+  </div>
+
+  <!-- start template component -->
+  <template id="loader-template">
+    <div>
+      <!-- start loader -->
+      <div class="loader-wrapper">
+        <div class="loader">
+          <svg class="circular" viewBox="25 25 50 50">
+            <circle class="loader-animation" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+          </svg>
+        </div>
+      </div>
+      <!-- end loader-->
+      <!-- START HEADER -->
+      <header class="no-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="navbar-header pull-left">
+                <!-- Logo -->
+                <a class="navbar-brand" href="index.html"><img src="#" class="img-responsive" alt=""/></a>
+              </div>
+            </div>
+      
+            <div class="col-md-8">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            
+              <!-- MENU -->
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a @click="toLogOut" >logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    <!-- END HEADER -->
+    </div>
+  </template>
+
+  
+
+  <template id="todolist-template">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <p class="small"><i>tanggal -date</i></p>
+          <h3 style="color: #ccc;">I hope you are having great day</h3>
+          <p>hello.. {{ username }} , Create task and will done you can check list done<br>
+            <a href="#" class="highlight">to do fancy</a>
+            <form @submit.prevent="toNewTodo">
+              <input type="text" v-model="newTodo">
+              <input type="submit" value="add">
+            </form>
+          </p>
+            <div id="playlist">
+              <div class="item-head">
+                <ul style="color: #ccc;">
+                  <li>#</li>
+                  <li>Task Name</li>
+                  <li>Done</li>
+                  <li>Delete</li>
+                </ul>
+              </div>
+              <div class="item">
+                <div class="player inactive"></div>
+                <ul>
+                  <li style="color: #ccc;">1</li>
+                  <li style="color: #ccc;">asasasas</li>
+                  <li style="color: #ccc;">as</li>
+                  <li class="play-btn play">
+                    <div style="color: #ccc;" class="sound1-btn btn-play">delete</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <!-- end template component -->
+
 </body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+<script>
+  // start component
+  Vue.component('load', {
+    template : '#loader-template',
+    methods : {
+      toLogOut(){
+        this.$emit('out',{
+
+        })
+      }
+    }
+  })
+  Vue.component('todo',{
+    template : '#todolist-template',
+    data : function(){
+      return{
+        username : localStorage.getItem('name'),
+        newTodo : ''
+      }
+    },
+    methods : {
+      toNewTodo(){
+        this.$emit('new',{
+          title : this.newTodo,
+          author : localStorage.getItem('user_Id')
+        })
+      }
+    }
+  })
+  // end component
+  new Vue({
+    el : '#app',
+    data : {
+      message : 'booo'
+    },
+    created(){
+      // console.log('<<<', localStorage.getItem('user_Id'))
+      // start cek condition storage
+      let storage = localStorage.getItem('token')
+      if (storage === null) {
+        window.location = "http://localhost:8080/login.html"
+      }
+      // end cek condition storage
+    },
+    methods : {
+      newTask : function(addNewTask){
+        console.log(addNewTask)
+      },
+      logout : function(){
+        localStorage.removeItem('token')
+        localStorage.removeItem('name')
+        localStorage.removeItem('user_Id')
+        window.location = "http://localhost:8080/login.html"
+      }
+    }
+  })
+</script>
+<script src="assets/js/loader.js"></script>
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/slick/slick.min.js"></script>
+<script src="assets/js/jquery.easing.min.js"></script>
 </html>

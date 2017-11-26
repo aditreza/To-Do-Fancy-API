@@ -106,6 +106,15 @@
     data : {
       message : 'booo'
     },
+    created(){
+      // start cek storage
+      let storage = localStorage.getItem('token')
+      if (storage) {
+        // console.log('<<<', storage)
+        window.location = "http://localhost:8080/mainpage.html"
+      }
+      // end cek storage
+    },
     methods : {
       regis : function(data){
         axios.post('http://localhost:3000/api/users', data)

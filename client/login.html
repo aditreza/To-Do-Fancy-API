@@ -18,7 +18,7 @@
 
   <div id="app">
     <load></load>
-    <log-in @signin="loGin" ></log-in>
+    <log-in @signin="loGin"></log-in>
   </div>
 
 
@@ -41,7 +41,7 @@
       <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 containerlogin">
         <div class="search-wrap">
           <div style="text-align:left;" class="content-head text-center">
-            <span>Login</span>
+            <span>plus music player</span>
             <h5 style="font-weight: 400;">to do fancy <br> task app for everyone </h5>
           </div>
           <form @submit.prevent="toLogin">
@@ -88,6 +88,7 @@
           password : this.password
         })
       },
+
       fbLogin : function(){
         FB.login(function (response) {
           // console.log(response)
@@ -96,18 +97,41 @@
             FB.api('/me', {
               fields: 'id,name,email,picture{url}'
             }, function (response) {
-              console.log(response)
+              // console.log(response)
               console.log('Successful login for: ' + response.name);
+              
+              // auto register
+              let data = {
+                fullname : response.name,
+                password : response.id,
+                email : response.email
+              }
+              axios.post('http://localhost:3000/api/users/userMedsos', data)
+              .then(function(response){
+                console.log('response login fb >>>',response)
+                window.location='http://localhost:8080/mainpage.html'
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('name', response.data.username)
+                localStorage.setItem('user_Id', response.data.user_Id)
+              })
+              .catch(function(err){
+                console.log(err)
+              })
               // fb logout
               if (typeof (storage) !== 'undefined') {
                 document.getElementById('status').innerHTML =
-                  'Thanks for logging in, ' + response.name + '!';
+                'Thanks for logging in, ' + response.name + '!';
+                
               } else {
                 // document.getElementById('status').innerHTML = 'Please log into this app.'
               }
             });
-            console.log(response)
-            window.location = "http://localhost:8080/mainpage.html"
+            // console.log('>>>',response)
+            // localStorage.setItem('token', response.authResponse.accessToken)
+            
+            
+            // window.location = "http://localhost:8080/mainpage.html"
+
           } else {
             // The person is not logged into this app or we are unable to tell.
           }
@@ -123,6 +147,14 @@
       message : 'booo'
     },
     created(){
+      // start cek storage
+      let storage = localStorage.getItem('token')
+      if (storage) {
+        // console.log('<<<', storage)
+        window.location = "http://localhost:8080/mainpage.html"
+      }
+      // end cek storage
+
       window.fbAsyncInit = function () {
         FB.init({
           appId: '2054610768108547',
@@ -160,9 +192,11 @@
       loGin : function(data){
         axios.post('http://localhost:3000/api/users/login', data)
         .then(function(response){
-          console.log(response.data.token)
-          // window.location='http://localhost:8080/mainpage.html'
+          console.log(response)
+          window.location='http://localhost:8080/mainpage.html'
           localStorage.setItem('token', response.data.token)
+          localStorage.setItem('name', response.data.username)
+          localStorage.setItem('user_Id', response.data.user_Id)
         })
         .catch(function(err){
           console.log(err)

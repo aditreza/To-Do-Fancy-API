@@ -7,6 +7,11 @@
   text-align:center;
 }
 
+.cont-mainpage{
+  background-color: #252525;
+  padding-top: 90px;
+}
+
 /* loader */
 .loader-wrapper.loader-off, body.loaded .loader-wrapper {
   opacity: 0;
