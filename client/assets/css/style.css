@@ -541,6 +541,27 @@ footer h4 {
 	display: inline-block;
 }
 
+.btn-style {
+	border-radius: 3px;
+	border: 2px solid #e81356;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 700;
+	position: relative;
+	color: #000020;
+	margin: -13px 0px;
+	top: 3px;
+	cursor: pointer;
+	transition: .4s;
+	display: inline-block;
+}
+
+.btn-style:hover {
+	background: #e81356;
+	color: #fff;
+	transition: .4s;
+}
+
 .btn-lg {
 	height: 50px;
 	line-height: 46px;

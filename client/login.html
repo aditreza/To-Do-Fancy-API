@@ -7,37 +7,72 @@
   <title>login to do Fancy</title>
   <link rel="stylesheet" title="custstyle" href="assets/css/custstyle.css"/>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="assets/css/icons/fontawesome/css/style.css">
+  <link rel="stylesheet" href="assets/css/icons/fontawesome/css/style.css">
+  <link rel="stylesheet" href="assets/css/slick.css">
+  <link rel="stylesheet" href="assets/css/animate.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body id="setopo-music" class="header2 setopo-music-main">
 
   <div id="app">
-    <loader-template/>
+    <load></load>
+    <log-in></log-in>
   </div>
 
 
   <!-- start template -->
-  <template id="loader">
+  <template id="loader-template">
     <!-- start loader -->
     <div class="loader-wrapper">
-        <div class="loader">
-          <svg class="circular" viewBox="25 25 50 50">
-            <circle class="loader-animation" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
-          </svg>
-        </div>
+      <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="loader-animation" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+        </svg>
       </div>
+    </div>
     <!-- end loader-->
+  </template>
+
+  <template id="login-template">
+    <!-- start login-intro -->
+    <div class="music-home-intro">
+      <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 containerlogin">
+        <div class="search-wrap">
+          <div style="text-align:left;" class="content-head text-center">
+            <span>Login</span>
+            <h5 style="font-weight: 400;">to do fancy <br> task app for everyone </h5>
+          </div>
+          <div class=" sb-form orlogin">
+            <input type="text" placeholder="username">
+            <input type="password" placeholder="password">
+          </div>
+          <div class="sb-form">
+            <button style="margin-top: 5%; margin-bottom: 5px;" type="submit" class="btn btn-lg btn-block">login</button>
+            <button type="submit" class="btn btn-lg btn-block">via facebook</button>
+            <p class="signup-here">no account ? <a style="color:#e81356;" href="signup.html"> Signup</a> here </p>
+          </div>
+        </div>
+      </div> 
+      <div style="text-align:center;" class="music-home-list">
+        <div class="container-fluid no-padding"></div>
+      </div>
+    </div>
+    <!-- end login-intro -->
   </template>
   <!-- end template -->
   
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
 <script>
+  
   // start component
-  Vue.component('loader-template',{
-    template : '#loader'
+  Vue.component('load', {
+    template : '#loader-template'
+  })
+  Vue.component('log-in', {
+    template : '#login-template'
   })
   // end component
 
@@ -51,6 +86,6 @@
 <script src="assets/js/loader.js"></script>
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/slick/slick.min.js"></script>
 <script src="assets/js/jquery.easing.min.js"></script>
-<script src="assets/js/main.js"></script>
 </html>

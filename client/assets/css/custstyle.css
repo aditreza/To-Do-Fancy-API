@@ -1,6 +1,11 @@
 .orlogin {
 	margin-top: 30%;
 }
+.signup-here{
+  color:white; 
+  margin-top:8%; 
+  text-align:center;
+}
 
 /* loader */
 .loader-wrapper.loader-off, body.loaded .loader-wrapper {
