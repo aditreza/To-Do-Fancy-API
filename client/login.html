@@ -12,21 +12,14 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body id="setopo-music" class="header2 setopo-music-main">
+
   <div id="app">
     <loader-template/>
   </div>
-  
-</body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
-<script>
-  // loader start
-  $(document).ready(function(){
-  $(".loader-wrapper").fadeOut();
-  })
-  // loader end
 
-  Vue.component('loader-template',{
-    template : `
+
+  <!-- start template -->
+  <template id="loader">
     <!-- start loader -->
     <div class="loader-wrapper">
         <div class="loader">
@@ -36,8 +29,17 @@
         </div>
       </div>
     <!-- end loader-->
-    `
+  </template>
+  <!-- end template -->
+  
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+<script>
+  // start component
+  Vue.component('loader-template',{
+    template : '#loader'
   })
+  // end component
 
   new Vue({
     el : '#app',
@@ -46,6 +48,7 @@
     }
   })
 </script>
+<script src="assets/js/loader.js"></script>
 <script src="assets/js/jquery.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.easing.min.js"></script>
