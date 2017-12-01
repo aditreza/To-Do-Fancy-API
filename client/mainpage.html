@@ -18,7 +18,7 @@
 
   <div id="app">
     <load @out="logout"></load>
-    <todo @new="newTask"></todo>
+    <todo @new="newTask" :todos="todos"></todo>
   </div>
 
   <!-- start template component -->
@@ -64,44 +64,29 @@
     <!-- END HEADER -->
     </div>
   </template>
-
   
 
   <template id="todolist-template">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <p class="small"><i>tanggal -date</i></p>
-          <h3 style="color: #ccc;">I hope you are having great day</h3>
-          <p>hello.. {{ username }} , Create task and will done you can check list done<br>
-            <a href="#" class="highlight">to do fancy</a>
-            <form @submit.prevent="toNewTodo">
-              <input type="text" v-model="newTodo">
-              <input type="submit" value="add">
-            </form>
-          </p>
-            <div id="playlist">
-              <div class="item-head">
-                <ul style="color: #ccc;">
-                  <li>#</li>
-                  <li>Task Name</li>
-                  <li>Done</li>
-                  <li>Delete</li>
-                </ul>
-              </div>
-              <div class="item">
-                <div class="player inactive"></div>
-                <ul>
-                  <li style="color: #ccc;">1</li>
-                  <li style="color: #ccc;">asasasas</li>
-                  <li style="color: #ccc;">as</li>
-                  <li class="play-btn play">
-                    <div style="color: #ccc;" class="sound1-btn btn-play">delete</div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-        </div>
+    <div class="col-md-6 offset-md-3 mainTODO">
+      <div>
+        <form @submit.prevent="toNewTodo">
+            <input type="text" v-model="newTodo" style="color: black;">
+            <input type="submit" value="add" style="color: black;">
+        </form>
+      </div>
+      <div style="margin-top:3%;">
+        <ul v-if="!todos.length">
+            <li > note: Belum ada task</li>
+        </ul>
+        <ul v-for="(todo, index) in todos" :key="index">
+          <li >
+            <span v-bind:class="{'completed' : todo.completed}">
+              <span style="color:white;">{{ index+1 }}. {{ todo.title }}</span>
+            </span>
+            <button v-on:click="toDelete(index)" style="margin-left:8%; color: black;">x</button>
+            <button v-on:click="toggleCompleted(todo)" style="color: black;">done</button>
+          </li>
+        </ul>
       </div>
     </div>
   </template>
@@ -115,14 +100,13 @@
     template : '#loader-template',
     methods : {
       toLogOut(){
-        this.$emit('out',{
-
-        })
+        this.$emit('out')
       }
     }
   })
   Vue.component('todo',{
     template : '#todolist-template',
+    props : ['todos'],
     data : function(){
       return{
         username : localStorage.getItem('name'),
@@ -131,10 +115,21 @@
     },
     methods : {
       toNewTodo(){
-        this.$emit('new',{
-          title : this.newTodo,
-          author : localStorage.getItem('user_Id')
-        })
+        let inputTask = this.newTodo.trim()
+        if(inputTask){
+          this.todos.push({
+            title : this.newTodo,
+            author : localStorage.getItem('user_Id'),
+            completed : false
+          })
+          this.newTodo = ''
+        }
+      },
+      toDelete(index){
+        this.todos.splice(index, 1)
+      },
+      toggleCompleted : function (todo) {
+        todo.completed = !todo.completed
       }
     }
   })
@@ -142,7 +137,8 @@
   new Vue({
     el : '#app',
     data : {
-      message : 'booo'
+      todos : [],
+      done : false
     },
     created(){
       // console.log('<<<', localStorage.getItem('user_Id'))
@@ -156,6 +152,8 @@
     methods : {
       newTask : function(addNewTask){
         console.log(addNewTask)
+        this.todos.push(addNewTask)
+        console.log(this.todos[0].title)
       },
       logout : function(){
         localStorage.removeItem('token')

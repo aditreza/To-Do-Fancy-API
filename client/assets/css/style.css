@@ -169,6 +169,7 @@ header {
 .page_header {
 	background: url(../images/head/01.jpg) no-repeat center top;
 	padding: 179px 0 180px;
+	margin-top: -27%;
 }
 
 .page_header h2 {
