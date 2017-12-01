@@ -149,6 +149,27 @@
       },
       toggleCompleted : function (todo) {
         todo.completed = !todo.completed
+        // console.log(todo._id)
+        if(!todo._id){
+          // console.log(todo.completed)
+          axios.post('http://localhost:3000/api/tasks/update', todo)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(function(err){
+            console.log(err)
+          })
+        }else{
+          axios.put('http://localhost:3000/api/tasks/'+ todo._id, {
+            completed : !todo.completed
+          })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(function(err){
+            console.log(err)
+          })
+        }
       }
     }
   })

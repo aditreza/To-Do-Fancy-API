@@ -27,11 +27,13 @@ const findAllTask = function(req,res){
 }
 
 const updateTask = function(req,res){
+  // console.log(req.params)
   let id = {
     _id : ObjectId(req.params.id)
   }
   Tasks.findById(id).then(function(data_Tasks){
-    data_Tasks.title = req.body.title
+    // console.log(data_Tasks)
+    data_Tasks.completed = !req.body.completed
     //save update
     data_Tasks.save().then(function(){
       console.log('[+] 1 Task Updated')
@@ -42,6 +44,24 @@ const updateTask = function(req,res){
     })
   }).catch(function(err){
     console.log('[-] error find id in update Tasks')
+    res.status(500).send(err)
+  })
+}
+
+const toupdate = function(req,res){
+  // console.log(req.body)
+  Tasks.findOne({ 'id_date' : req.body.id_date }).then(function(data){
+    // console.log('>>>', data, '<<<<')
+    data.completed = req.body.completed
+    data.save().then(function(dataup){
+      // console.log(dataup)
+      res.status(201).send('[+] 1 Task update by id_date')
+    }).catch(function(err){
+      console.log('[-] error findOne id date in update Tasks')
+      res.status(500).send(err)
+    })
+  }).catch(function(err){
+    console.log('[-] error findOne id date in update Tasks')
     res.status(500).send(err)
   })
 }
@@ -65,7 +85,7 @@ const todelete = function(req,res){
     console.log('[+] 1 Task delete by id_date')
     res.status(201).send('[+] 1 Task Task delete by id_date')
   }).catch(function(err){
-    console.log('[-] error find id in update Tasks')
+    console.log('[-] error find id date in delete Tasks')
     res.status(500).send(err)
   })
 }
@@ -75,5 +95,6 @@ module.exports = {
   findAllTask,
   updateTask,
   destroyTask,
-  todelete
+  todelete,
+  toupdate
 }
