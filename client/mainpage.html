@@ -83,7 +83,7 @@
             <span v-bind:class="{'completed' : todo.completed}">
               <span style="color:white;">{{ index+1 }}. {{ todo.title }}</span>
             </span>
-            <button v-on:click="toDelete(index)" style="margin-left:8%; color: black;">x</button>
+            <button v-on:click="toDelete(todo, index)" style="margin-left:8%; color: black;">x</button>
             <button v-on:click="toggleCompleted(todo)" style="color: black;">done</button>
           </li>
         </ul>
@@ -117,16 +117,35 @@
       toNewTodo(){
         let inputTask = this.newTodo.trim()
         if(inputTask){
-          this.todos.push({
+          this.$emit('new', {
             title : this.newTodo,
             author : localStorage.getItem('user_Id'),
-            completed : false
+            completed : false,
+            id_date : Date.now()
           })
           this.newTodo = ''
         }
       },
-      toDelete(index){
+      toDelete(todo, index){
         this.todos.splice(index, 1)
+        console.log(todo._id)
+        if(!todo._id){
+          axios.post('http://localhost:3000/api/tasks/todelete', todo)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(function(err){
+            console.log(err)
+          })
+        }else{
+          axios.delete('http://localhost:3000/api/tasks/'+ todo._id)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(function(err){
+            console.log(err)
+          })
+        } 
       },
       toggleCompleted : function (todo) {
         todo.completed = !todo.completed
@@ -148,12 +167,34 @@
         window.location = "http://localhost:8080/login.html"
       }
       // end cek condition storage
+      // load data by user
+      axios.get('http://localhost:3000/api/tasks')
+      .then(({data}) => {
+        let user = localStorage.getItem('user_Id')
+        let dataUser = data
+        dataUser.forEach(data => {
+          if(data.author._id === user){
+            console.log(data)
+            this.todos.push(data)
+          }
+        })
+      })
+      .catch(function(err){
+        console.log(err)
+      })
     },
     methods : {
       newTask : function(addNewTask){
         console.log(addNewTask)
         this.todos.push(addNewTask)
-        console.log(this.todos[0].title)
+        // console.log(this.todos[0].title)
+        axios.post('http://localhost:3000/api/tasks', addNewTask)
+        .then(function(response){
+          console.log(response)
+        })
+        .catch(function(err){
+          console.log(err)
+        })
       },
       logout : function(){
         localStorage.removeItem('token')

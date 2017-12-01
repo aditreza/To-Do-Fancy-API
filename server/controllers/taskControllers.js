@@ -4,7 +4,9 @@ const Tasks = require('../models/taskModels')
 const createTask = function(req,res){
   let newTask = Tasks({
     title : req.body.title,
-    author : req.body.author
+    author : req.body.author,
+    completed : req.body.completed,
+    id_date : req.body.id_date
   })
   newTask.save().then(function(){
     res.status(201).send('1 Task Created')
@@ -45,6 +47,7 @@ const updateTask = function(req,res){
 }
 
 const destroyTask = function(req,res){
+  // console.log(req.params)
   let id = {
     _id : ObjectId(req.params.id)
   }
@@ -56,9 +59,21 @@ const destroyTask = function(req,res){
   })
 }
 
+const todelete = function(req,res){
+  // console.log(req.body.id_date)
+  Tasks.findOneAndRemove({'id_date' : req.body.id_date}).then(function(){
+    console.log('[+] 1 Task delete by id_date')
+    res.status(201).send('[+] 1 Task Task delete by id_date')
+  }).catch(function(err){
+    console.log('[-] error find id in update Tasks')
+    res.status(500).send(err)
+  })
+}
+
 module.exports = {
   createTask,
   findAllTask,
   updateTask,
-  destroyTask
+  destroyTask,
+  todelete
 }

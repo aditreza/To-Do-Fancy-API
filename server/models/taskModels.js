@@ -16,7 +16,7 @@ const taskSchema = new Schema({
     type : Boolean,
     default : false
   },
-
+  id_date : String
 })
 
 const taskModels = mongoose.model('Tasks', taskSchema)
