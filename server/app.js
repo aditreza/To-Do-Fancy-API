@@ -13,11 +13,17 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // db connect
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost/todoFancy').then(function(){
+// mongoose.connect('mongodb://localhost/todoFancy').then(function(){
+//   console.log('[+] success db connection')
+// }).catch(function(err){
+//   console.error(err)
+// })
+mongoose.connect('mongodb://bukabukaan:bukabukaan12#@clusterbukabukaan-shard-00-00-oefpr.mongodb.net:27017,clusterbukabukaan-shard-00-01-oefpr.mongodb.net:27017,clusterbukabukaan-shard-00-02-oefpr.mongodb.net:27017/todoFancy?ssl=true&replicaSet=ClusterBukabukaan-shard-0&authSource=admin').then(function(){
   console.log('[+] success db connection')
 }).catch(function(err){
   console.error(err)
 })
+
 //routes
 const index = require('./routes/index')
 const tasks = require('./routes/task')
