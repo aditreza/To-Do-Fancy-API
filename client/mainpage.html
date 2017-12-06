@@ -4,17 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" title="custstyle" href="assets/css/custstyle.css"/>
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/icons/fontawesome/css/style.css">
-  <link rel="stylesheet" href="assets/css/slick.css">
-  <link rel="stylesheet" href="assets/css/animate.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/main-page-style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <title>to do fancy</title>
 </head>
-<body class="cont-mainpage">
+<!-- <body class="cont-mainpage"> -->
+<body>
 
   <div id="app">
     <load @out="logout"></load>
@@ -33,65 +30,65 @@
         </div>
       </div>
       <!-- end loader-->
-      <!-- START HEADER -->
-      <header class="no-bg">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="navbar-header pull-left">
-                <!-- Logo -->
-                <a class="navbar-brand" href="index.html"><img src="#" class="img-responsive" alt=""/></a>
+      </header>
+      <div class="main-container menu-section">
+          <div style="z-index: 3;" class="menu-toggle">
+            <div class="one"></div>
+            <div class="two"></div>
+            <div class="three"></div>
+          </div>
+          <nav>
+            <ul role="navigation" class="hidden">
+              <li><a @click="toLogOut">Logout</a></li>
+              <li style="margin-top:5%; color:white;">
+                <p>Experimental VueJs</p>
+              </li>
+            </ul>
+          </nav>
+        </div>
+    </div>
+  </template>
+  <!-- START MAIN-PAGE -->
+  <template id="todolist-template">
+    <div class="wrapper">
+      <div class="main-container">
+        <div class="top">
+          <div class="title">
+            <h5 style="margin-bottom:2%;">hi.. {{username}}</h5>
+            <h1>{{ in_date() }}</h1>
+              <div class="task-remainder">
+                <h2>You've got <span class="remainder total__items"> {{ todos.length }} total thing</span> to do today!</h2>
+                <h2> <span class="remainder total__items">3</span> remaining and <span class="remainder total__items">3</span> done</h2>
               </div>
-            </div>
-      
-            <div class="col-md-8">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-            
-              <!-- MENU -->
-              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a @click="toLogOut" >logout</a></li>
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
-      </header>
-    <!-- END HEADER -->
-    </div>
-  </template>
-  
-
-  <template id="todolist-template">
-    <div class="col-md-6 offset-md-3 mainTODO">
-      <div>
-        <form @submit.prevent="toNewTodo">
-            <input type="text" v-model="newTodo" style="color: black;">
-            <input type="submit" value="add" style="color: black;">
-        </form>
-      </div>
-      <div style="margin-top:3%;">
-        <ul v-if="!todos.length">
-            <li > note: Belum ada task</li>
-        </ul>
-        <ul v-for="(todo, index) in todos" :key="index">
-          <li >
-            <span v-bind:class="{'completed' : todo.completed}">
-              <span style="color:white;">{{ index+1 }}. {{ todo.title }}</span>
-            </span>
-            <button v-on:click="toDelete(todo, index)" style="margin-left:8%; color: black;">x</button>
-            <button v-on:click="toggleCompleted(todo)" style="color: black;">done</button>
-          </li>
-        </ul>
+        <div class="bottom">
+          <div class="add" style="color:#90999b; display: block;">
+            <div class="add__container">
+              <form @submit.prevent="toNewTodo">
+                <button type="submit" value="add" class="add__btn">+</button>
+                <input type="text" class="add__description" v-model="newTodo" placeholder="What would you like to do today?">
+              </form>
+            </div>
+          </div>
+          <fieldset class="main-List tasks-list">
+            <label v-if="!todos.length">
+                note: Belum ada task
+            </label>
+            <label v-for="(todo, index) in todos" :key="index" class="tasks-list-item">
+              <input v-on:click="toggleCompleted(todo)" type="checkbox" name="tasks-list-item" value="1" class="tasks-list-cb">
+              <span v-bind:class="{'complete1' : todo.completed}" v-on:click="toggleCompleted(todo)" class="tasks-list-mark"></span>
+              <span v-bind:class="{'complete2' : todo.completed}" class="tasks-list-desc">
+                <span style="font-size: 20px;">{{ todo.title }}</span>
+              </span>
+              <span v-on:click="toDelete(todo, index)" class="btn-del"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </label>
+          </fieldset>
+        </div>
       </div>
     </div>
   </template>
-  <!-- end template component -->
-
+  <!-- END MAIN-PAGE -->
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
 <script>
@@ -102,6 +99,13 @@
       toLogOut(){
         this.$emit('out')
       }
+    },
+    mounted () {
+      $(".menu-toggle").on('click', function() {
+        $(this).toggleClass("on")
+        $('.menu-section').toggleClass("on")
+        $("nav ul").toggleClass('hidden')
+      })
     }
   })
   Vue.component('todo',{
@@ -110,10 +114,25 @@
     data : function(){
       return{
         username : localStorage.getItem('name'),
-        newTodo : ''
+        newTodo : '',
       }
     },
     methods : {
+      in_date : function(){
+        this.todos.forEach(todo => {
+          console.log(todo.completed)
+        })
+        let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+        ]
+        let day = new Date();
+        let date = day.getDate()
+        let obj = {
+          day: day,
+          date: date
+        }
+        return `${date} ${monthNames[day.getMonth()]} ${day.getFullYear()}`
+      },
       toNewTodo(){
         let inputTask = this.newTodo.trim()
         if(inputTask){

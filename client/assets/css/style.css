@@ -3502,7 +3502,7 @@ h4.custom-head {
 .search-big h5 {
 	letter-spacing: 0px;
 	text-transform: none;
-	color: rgb(255, 255, 255);
+	color: rgba(255, 255, 255, 0.68);
 	font-size: 48px;
 	font-weight: 300;
 	line-height: 60px;
@@ -3718,7 +3718,7 @@ h4.custom-head {
 }
 
 .music-home-intro {
-	background: url(../images/bg/bg-login.jpg) no-repeat center top;
+	/* background: url(../images/bg/bg-login.jpg) no-repeat center top; */
 	background-size: cover;
 	/* padding: 235px 0 0; */
 	padding: 200px 0 190px;
@@ -3765,7 +3765,11 @@ h4.custom-head {
 }
 
 .setopo-music-main {
-	background: #000020 !important;
+	/* background: #CAD6E5 !important; */
+	background: #C9D6FF;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	
 }
 
 .setopo-music-main .bttn ,
